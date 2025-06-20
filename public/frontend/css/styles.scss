@@ -1,0 +1,19 @@
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+
+
+$custom-colors: (
+    "gray":#e3e3e3,
+
+);
+
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+
+
+
+@import "node_modules/bootstrap/scss/bootstrap";
+// #212529-dark
+.row img:hover{
+    scale: 1.025;
+}
