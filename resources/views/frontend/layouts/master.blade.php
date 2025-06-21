@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>H D H</title>
     <link rel="stylesheet" href="{{asset('frontend/css/styles.css')}}">
-<link rel="icon" href="{{asset('favicon.ico')}}">
+    <link rel="icon" href="{{asset('favicon.ico')}}">
 </head>
 <body class="bg-gray">
     
