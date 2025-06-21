@@ -7,6 +7,10 @@ Route::get('/welcome', function () {
     return view('welcome');
 });
 
+Route::get('/dashboard/admin', function () {
+    return view('admin.dashboard');
+});
+
 Route::get('/', function () {
     return view('frontend.home');
 });
@@ -36,6 +40,25 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+// Route::controller(SliderController::class)->middleware(['auth','verified'])->group(function(){
+//     Route::get('/SliderIndex',[SliderController::class, 'Index'])->name('slider.index');
+// }); 
+
+
+
+
+
+use App\Http\Controllers\admin\SliderController;
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Prefix URL with '/slider' and route names with 'slider.'
+ 
+        Route::get('/SliderIndex', [SliderController::class, 'Index'])->name('index'); // URL: /slider/index
+        Route::post('/saveslider', [SliderController::class, 'storeslider'])->name('slider.store');
+});
+
+
 
 require __DIR__.'/auth.php';
 

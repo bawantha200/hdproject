@@ -44,7 +44,7 @@
             </x-primary-button>
         </div>
         <div class="text-center mt-3">
-            Don't have an account? <a href="/register">Register now</a>
+            Don't have an account? <a class="text-decoration-none" href="/register">Register now</a>
         </div>
     </form>
 </x-guest-layout>
