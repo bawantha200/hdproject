@@ -10,17 +10,8 @@
                 <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button> 
             </div> 
             <div class="carousel-inner"> 
-                <div class="carousel-item active">
-                     <img src="frontend/images/ree/img1.jpg" class="d-block w-100" alt="Slide 1">
-                    <div class="container"> 
-                        <div class="carousel-caption d-flex justify-content-center align-items-end flex-column top-0"> 
-                            <h1>Reliable Vehicles, Anytime</h1> 
-                            <p class="opacity-75 fst-italic">Day or night, your vehicle is ready.</p> 
-                            <p><a class="btn btn-md btn-primary" href="register">Sign up today</a></p> 
-                        </div> 
-                    </div> 
-                </div> 
-                <div class="carousel-item"> 
+                @include('frontend/home/slider')
+                <!-- <div class="carousel-item"> 
                     <img src="frontend/images/ree/img2.jpg" class="d-block w-100" alt="Slide 2">
                             <div class="container"> 
                                 <div class="carousel-caption d-flex justify-content-center align-items-center flex-column top-0"> 
@@ -29,9 +20,9 @@
                                     <p><a class="btn btn-md btn-primary" href="#">Book Now</a></p> 
                                 </div> 
                             </div> 
-                        </div> 
-                        <div class="carousel-item"> 
-                            <img src="frontend/images/ree/img3.jpg" class="d-block w-100" alt="Slide 3">
+                </div>
+                <div class="carousel-item"> 
+                    <img src="frontend/images/ree/img3.jpg" class="d-block w-100" alt="Slide 3">
                             <div class="container"> 
                                 <div class="carousel-caption d-flex justify-content-center align-items-start flex-column top-0"> 
                                     <h1>Trusted by Professionals</h1> 
@@ -39,7 +30,8 @@
                                     <p><a class="btn btn-md btn-primary" href="#">Gallery</a></p> 
                                 </div> 
                             </div> 
-                        </div> 
+                </div>  -->
+                        
             </div> 
                     <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev"> 
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span> 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Models\Slider;
 
 Route::get('/welcome', function () {
     return view('welcome');
@@ -12,7 +13,9 @@ Route::get('/dashboard/admin', function () {
 });
 
 Route::get('/', function () {
-    return view('frontend.home');
+    $sliders = Slider::all();
+
+    return view('frontend.home',compact('sliders'));
 });
 
 Route::get('/gallery', function () {
@@ -55,8 +58,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Prefix URL with '/slider' and route names with 'slider.'
  
         Route::get('/SliderIndex', [SliderController::class, 'Index'])->name('index'); // URL: /slider/index
-        Route::post('/saveslider', [SliderController::class, 'storeslider'])->name('slider.store');
+        Route::post('/saveSlider', [SliderController::class, 'storeslider'])->name('slider.store');
+        Route::post('/sliderUpdate', [SliderController::class, 'updateslider'])->name('slider.update');
+        Route::get('/deleteSlider/{id}', [SliderController::class, 'deleteslider'])->name('slider.delete');
 });
+
+
+
+
 
 
 
