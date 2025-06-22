@@ -10,7 +10,8 @@
                 <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button> 
             </div> 
             <div class="carousel-inner"> 
-                @include('frontend/home/slider')
+                @include('frontend.home.slider')
+                
                 <!-- <div class="carousel-item"> 
                     <img src="frontend/images/ree/img2.jpg" class="d-block w-100" alt="Slide 2">
                             <div class="container"> 

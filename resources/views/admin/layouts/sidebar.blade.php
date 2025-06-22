@@ -8,6 +8,7 @@
                     <li class="nav-item"><a href="#" class="nav-link text-white">Payments</a></li>
                     <li class="nav-item"><a href="#" class="nav-link text-white">Reports</a></li>
                     <li class="nav-item"><a href="/SliderIndex" class="nav-link text-white">Page Settings</a></li>
+                    <li class="nav-item"><a href="/GalleryIndex" class="nav-link text-white">Gallery</a></li>
                     <hr class="featurette-divider">
                     <li><a href="/"><button type="button" class="btn btn-outline-light">Logout</button></a></li>
                 </ul>

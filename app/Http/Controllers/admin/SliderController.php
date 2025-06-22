@@ -14,13 +14,15 @@ class SliderController extends Controller
         $sliders = Slider::all();
 
         return view('admin.home.slider',compact('sliders'));
+        
     }
 
     public function storeslider(Request $request){
         $validatedData = $request->validate([
         'heading' => 'required|string',
         'sub_heading'=> 'required|string|max:255',
-        'image_upload' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',// max 2mb
+        'btn_name' => 'required|string|max:15',
+        'image_upload' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096',// max 3mb
         'more_info_link' => 'nullable|url',
         ]);
 
@@ -31,6 +33,7 @@ class SliderController extends Controller
         Slider::create([
             'heading' => $validatedData['heading'],
             'sub_heading'=> $validatedData['sub_heading'],
+            'btn_name' => $validatedData['btn_name'],
             'image_link' => $imagePath,
             'more_info_link' => $validatedData['more_info_link'],
         ]);
@@ -42,7 +45,8 @@ class SliderController extends Controller
     public function updateslider(Request $request){
         $validatedData = $request->validate([
         'heading' => 'required|string',
-        'sub_heading'=> 'required|string|max:255',
+        'sub_heading' => 'required|string|max:255',
+        'btn_name' => 'required|string|max:15',
         'more_info_link' => 'nullable|url',
         ]);
 
@@ -53,6 +57,7 @@ class SliderController extends Controller
         $update = Slider::find($request->slider_id);
         $update->heading = $validatedData['heading'];
         $update->sub_heading = $validatedData['sub_heading'];
+        $update->btn_name = $validatedData['btn_name'];
 
         if($request->hasFile('image_upload')){
             $imagePath = $request->file('image_upload')->store('slides', 'public');

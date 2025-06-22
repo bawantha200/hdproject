@@ -48,6 +48,11 @@
                     <label for="sub_heading" class="form-label">Sub Heading</label>
                     <input type="text" class="form-control" id="sub_heading" name="sub_heading" placeholder="Enter Sub Heading">
                 </div>
+                <!--button name-->
+                <div class="mb-3">
+                    <label for="btn_name" class="form-label">Button Name</label>
+                    <input type="text" class="form-control" id="btn_name" name="btn_name" placeholder="Enter Button Name">
+                </div>
                 <!--Image upload-->
                 <div class="mb-3">
                     <label for="image_upload" class="form-label">Image Upload</label>
@@ -56,7 +61,7 @@
                 <!--URL link-->
                 <div class="mb-3">
                     <label for="more_info_link" class="form-label">More info link</label>
-                    <input type="url" class="form-control" id="more_info_link" name="more_info_link" placeholder="More Info">
+                    <input type="text" class="form-control" id="more_info_link" name="more_info_link" placeholder="More Info">
                 </div>
 
             </div>
@@ -72,13 +77,15 @@
 <!--end modal -->
 
 <div class="mt-5">
-                    <h4>Recent Bookings</h4>
+                    <h4>Home Page Carousel Slides</h4>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover">
                             <thead class="table-light">
                             <tr>
+                               
                                 <th>Heading</th>
                                 <th>Sub Heading</th>
+                                <th>Button Name</th>
                                 <th>Image</th>
                                 <th>More Info Link</th>
                                 <th>Action</th>
@@ -88,12 +95,14 @@
                             <tbody>
                                 @foreach ($sliders as $slider)
                                 <tr>
+                                
                                     <td>{{$slider->heading}}</td>
                                     <td>{{$slider->sub_heading}}</td>
+                                    <td>{{$slider->btn_name}}</td>
                                     <td><img width="100" src="{{asset('storage/'.$slider->image_link)}}" alt=""></td>
                                     <td>{{$slider->more_info_link}}</td>
                                     <td><button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#slideModal{{$slider->id}}">Edit</button>
-                                    <a href="{{ route('slider.delete', $slider->id) }}" class="btn btn-danger">Delete</a>
+                                    <!-- <a href="{{ route('slider.delete', $slider->id) }}" class="btn btn-danger">Delete</a> -->
                                     </td>
                                 </tr>
 
@@ -120,6 +129,11 @@
                                                 <div class="mb-3">
                                                     <label for="sub_heading" class="form-label">Sub Heading</label>
                                                     <input type="text" class="form-control" id="sub_heading" name="sub_heading" value="{{$slider->sub_heading}}">
+                                                </div>
+                                                <!--button name-->
+                                                <div class="mb-3">
+                                                    <label for="btn_name" class="form-label">Button Name</label>
+                                                    <input type="text" class="form-control" id="btn_name" name="btn_name" value="{{$slider->btn_name}}">
                                                 </div>
                                                 <!--Image upload-->
                                                 <div class="mb-3">
@@ -150,6 +164,14 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
+</div>
+
+
+
 
 @endsection
+
+
+
+
+<!--model for gallery-->

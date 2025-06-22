@@ -4,16 +4,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Slider extends Model
+class Gallery extends Model
 {
     //
     use HasFactory;
-
     protected $fillable = [
-        'heading',
-        'sub_heading',
-        'btn_name',
-        'image_link',
-        'more_info_link'
+        'title',
+        'description',
+        'image_link'
     ];
+
+
 }

@@ -1,8 +1,10 @@
 <?php
-
+use App\Http\Controllers\admin\SliderController;
+use App\Http\Controllers\admin\GalleryController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Slider;
+use App\Models\Gallery;
 
 Route::get('/welcome', function () {
     return view('welcome');
@@ -19,8 +21,13 @@ Route::get('/', function () {
 });
 
 Route::get('/gallery', function () {
-    return view('frontend.gallery');
+    $galleries = Gallery::all();
+        return view('frontend.gallery',compact('galleries'));
 });
+
+// Route::get('/gallery', function () {
+//     return view('frontend.gallery');
+// });
 
 Route::get('/vehicle', function () {
     return view('frontend.vehicle');
@@ -49,11 +56,6 @@ Route::middleware('auth')->group(function () {
 // }); 
 
 
-
-
-
-use App\Http\Controllers\admin\SliderController;
-
 Route::middleware(['auth', 'verified'])->group(function () {
     // Prefix URL with '/slider' and route names with 'slider.'
  
@@ -63,6 +65,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/deleteSlider/{id}', [SliderController::class, 'deleteslider'])->name('slider.delete');
 });
 
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Prefix URL with '/slider' and route names with 'slider.'
+ 
+        Route::get('/GalleryIndex', [GalleryController::class, 'Index'])->name('index'); // URL: /slider/index
+        Route::post('/saveGallery', [GalleryController::class, 'storegallery'])->name('gallery.store');
+        Route::post('/galleryUpdate', [GalleryController::class, 'updategallery'])->name('gallery.update');
+        Route::get('/deleteGallery/{id}', [GalleryController::class, 'deletegallery'])->name('gallery.delete');
+});
 
 
 
