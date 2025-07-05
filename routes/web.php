@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\admin\SliderController;
 use App\Http\Controllers\admin\GalleryController;
+use App\Http\Controllers\admin\PermissionController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Slider;
@@ -66,7 +67,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    // Prefix URL with '/slider' and route names with 'slider.'
+    // Prefix URL with '/gallery' and route names with 'gallery.'
  
         Route::get('/GalleryIndex', [GalleryController::class, 'Index'])->name('index'); // URL: /slider/index
         Route::post('/saveGallery', [GalleryController::class, 'storegallery'])->name('gallery.store');
@@ -75,6 +76,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Prefix URL with '/gallery' and route names with 'gallery.'
+ 
+        Route::get('/permissionIndex', [PermissionController::class, 'index'])->name('index'); // URL: /slider/index
+        Route::post('/savePermission', [PermissionController::class, 'storePermission'])->name('permission.store');
+        Route::post('/updatePermission', [PermissionController::class, 'updatePermission'])->name('permission.update');
+        Route::get('/deletePermission/{id}', [PermissionController::class, 'deletePermission'])->name('permission.delete');
+});
 
 
 
