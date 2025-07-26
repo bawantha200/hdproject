@@ -7,13 +7,11 @@
     </div>
     <div class="flex items-center gap-2 h-full py-3">
       <i class="ph ph-user-circle text-xl"></i>
-          <span class="text-white">
-            {{ Auth::user()->first_name ?? Auth::user()->name }}
-          </span>
-            @if(Auth::user()->roles->count() > 0)
-              <span class="badge bg-light text-dark">
-                  {{ Auth::user()->getRoleNames()->first() }}
-              </span>
-            @endif
+      <span class="text-white">
+        {{ Auth::user()->first_name ?? Auth::user()->name }}
+      </span>
+      <span class="badge bg-light text-dark">
+        {{ Auth::user()->getRoleNames()->first() }}
+      </span>
     </div>
-  </nav>
+</nav>

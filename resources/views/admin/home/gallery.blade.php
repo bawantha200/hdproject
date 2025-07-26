@@ -69,18 +69,14 @@
 <div class="mt-5">
                     <h4>Home Page Carousel Slides</h4>
                     <div class="table-responsive">
-                        <table class="table table-bordered table-hover">
-                            <thead class="table-light">
-                            <tr>
-                                
-                                <th>Title</th>
-                                <th>Description</th>
-                                
-                                <th>Image</th>
-                             
-                                <th>Action</th>
-
-                            </tr>
+                        <table class="table table-bordered table-hover table-striped">
+                            <thead class="bg-primary text-white">
+                                <tr>
+                                    <th class="align-middle">Title</th>
+                                    <th class="align-middle">Description</th>
+                                    <th class="align-middle">Image</th>
+                                    <th class="align-middle">Action</th>
+                                </tr>
                             </thead>
                             <tbody>
                                 @foreach ($galleries as $gallery)

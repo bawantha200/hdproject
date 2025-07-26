@@ -1,7 +1,7 @@
 <div class="col-md-3 col-lg-2 bg-dark text-white p-2 text-center">
                 <!-- <hr class="featurette-divider"> -->
                 <ul class="nav flex-column">
-                    <li class="nav-item"><a href="/dashboard/admin" class="nav-link text-white">Overview</a></li>
+                    <li class="nav-item"><a href="/dashboard" class="nav-link text-white">Overview</a></li>
                     <li class="nav-item"><a href="#" class="nav-link text-white">Bookings</a></li>
                     <li class="nav-item"><a href="#" class="nav-link text-white">Vehicles</a></li>
                     <li class="nav-item"><a href="#" class="nav-link text-white">Customers</a></li>

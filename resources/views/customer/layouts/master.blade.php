@@ -12,7 +12,7 @@
 </head>
 
 <body class="bg-gray-100 font-sans">
-    @include('admin.layouts.navbar')
+    @include('customer.layouts.navbar')
     <!-- Mobile Toggle Button -->
     <button id="menuToggle" class="lg:hidden fixed top-4 left-4 z-50 bg-[#212529] text-white p-2 rounded">
         <i class="ph ph-list text-2xl"></i>
@@ -21,7 +21,7 @@
     <div class="flex min-h-screen">
         <!-- Sidebar -->
             
-            @include('admin.layouts.sidebar1')
+            @include('customer.layouts.sidebar')
 
             <!-- Main content -->
              <div class="col-12 col-md-9 col-lg-10 p-4">

@@ -6,7 +6,10 @@ use App\Http\Controllers\admin\RoleController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\customer\ProviderController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\VehicleController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Slider;
 use App\Models\Gallery;
@@ -18,6 +21,17 @@ Route::get('/welcome', function () {
 Route::get('/dashboard/admin', function () {
     return view('dashboard');
 });
+Route::get('/dashboard/customer', function () {
+    return view('customer.dashboard');
+});
+
+// Route::get('/dashboard', function () {
+//     return view('customer.dashboard');
+// })->middleware(['auth', 'verified','role:provider|renter']);
+
+// Route::get('/dashboard', function () {
+//     return view('admin.dashboard');
+// })->middleware(['auth', 'verified','role:admin|manager']);
 
 Route::get('/', function () {
     $sliders = Slider::all();
@@ -29,10 +43,6 @@ Route::get('/gallery', function () {
     $galleries = Gallery::all();
         return view('frontend.gallery',compact('galleries'));
 });
-
-// Route::get('/gallery', function () {
-//     return view('frontend.gallery');
-// });
 
 Route::get('/vehicle', function () {
     return view('frontend.vehicle');
@@ -46,9 +56,9 @@ Route::get('/contact', function () {
     return view('frontend.contact');
 });
 
-Route::get('/dashboard', function () {
-    return view('admin.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('admin.dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
@@ -61,10 +71,18 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->name('logout');
 
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// Route::middleware('auth')->group(function () {
+//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// });
+
+
+// Profile routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profileIndex', [ProfileController::class, 'index'])->name('index');
+    Route::put('/profileUpdate', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
 });
 
 // Route::controller(SliderController::class)->middleware(['auth','verified'])->group(function(){
@@ -123,6 +141,36 @@ Route::middleware(['auth', 'verified','role:admin'])->group(function () {
 });
 
 // 'role:admin'
+Route::get('/profile', function () {
+    return view('profile');
+})->middleware(['auth'])->name('profile');
+
+// Laravel Breeze/Fortify already provides these:
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+
+
+// Route::get('/vehicles', function () {
+//     return view('customer.vehicles');
+// });
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('vehicles', VehicleController::class);
+});
+
+// OR if you're using resource routes (recommended for full CRUD)
+// Route::resource('vehicles', VehicleController::class)->names([
+//     'index' => 'customer.vehicles',
+// ]);
+
+
+
 
 
 require __DIR__.'/auth.php';

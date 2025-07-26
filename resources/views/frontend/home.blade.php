@@ -53,6 +53,8 @@
                     </div> 
                     <div class="col-md-7 p-5"> 
                         <h2 class="featurette-heading fw-normal lh-1">On-Demand Availability</h2> 
+          
+          
                         <p class="lead fs-4">Whether it’s early morning or late at night, our service ensures you always have access to the equipment you need — right on schedule.</p> 
                     </div> 
                      
