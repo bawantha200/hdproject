@@ -9,20 +9,30 @@
                     <li class="nav-item"><a href="#" class="nav-link text-white">Reports</a></li>
                     <li class="nav-item"><a href="/SliderIndex" class="nav-link text-white">Page Settings</a></li>
                     <li class="nav-item"><a href="/GalleryIndex" class="nav-link text-white">Gallery</a></li>
+
+                    @if(auth()->user()->hasRole('admin'))
+                    <!-- Show admin-only menu items -->
+
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                         User Role Managemnet
                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                     </a>
                     <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="/">Users</a>
-                                    <a class="nav-link" href="/">Roles</a>
+                                <nav class="sb-sidenav-menu-nested nav flex-column">
+                                    <a class="nav-link" href="/userIndex">Users</a>
+                                    <a class="nav-link" href="/roleIndex">Roles</a>
                                     <a class="nav-link" href="/permissionIndex">Permission</a>
                                 </nav>
                     </div>
-                       
+                    @endif
+                    
                     <hr class="featurette-divider">
-                    <li><a href="/"><button type="button" class="btn btn-outline-light">Logout</button></a></li>
+                    <!-- <li><a href="{{ route('logout') }}"><button type="button" class="btn btn-outline-light">Logout</button></a></li> -->
+                     <li>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="btn btn-outline-light">Logout</button>
+                        </form>
+                    </li>
                 </ul>
             </div>

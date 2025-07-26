@@ -4,7 +4,6 @@
     <h2>Slider</h2>
 </div>
 
-@endsection
 
 
 @if (session('success'))
@@ -25,6 +24,7 @@
     </div>
 @endif
 
+@endsection
 
 <!-- modal-->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

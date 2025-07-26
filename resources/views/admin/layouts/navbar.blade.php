@@ -9,8 +9,16 @@
             Dashboard
             </div>
 
-            <div class="text-white">
-            Welcome, Admin
+            <!-- <div class="text-white">
+            {{Auth::user()->name}}
+            </div> -->
+            <div class="text-white d-flex align-items-center">
+                <span class="me-2">{{ Auth::user()->first_name ?? Auth::user()->name }}</span>
+                @if(Auth::user()->roles->count() > 0)
+                    <span class="badge bg-light text-dark">
+                        {{ Auth::user()->getRoleNames()->first() }}
+                    </span>
+                @endif
             </div>
 
         </div>
