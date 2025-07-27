@@ -160,18 +160,29 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 // });
 
 
-Route::middleware(['auth'])->group(function () {
-    Route::resource('vehicles', VehicleController::class);
-});
+// Route::middleware(['auth'])->group(function () {
+//     Route::resource('vehicles', VehicleController::class);
+// });
 
 // OR if you're using resource routes (recommended for full CRUD)
 // Route::resource('vehicles', VehicleController::class)->names([
 //     'index' => 'customer.vehicles',
 // ]);
 
+// Remove or update this if it exists
+// Route::get('/vehicles', [VehicleController::class, 'index']);
 
+// // Keep these
+// Route::get('/vehicles/create', [VehicleController::class, 'create']);
+// Route::post('/vehicles', [VehicleController::class, 'store']);
 
+Route::middleware(['auth', 'verified'])->group(function () {
 
+        Route::get('/vehicleIndex', [VehicleController::class, 'index'])->name('index'); 
+        Route::post('/storeVehicle', [VehicleController::class, 'storeVehicle'])->name('vehicle.store');
+        Route::post('/updateVehicle', [VehicleController::class, 'updateVehicle'])->name('vehicle.update');
+        Route::get('/deleteVehicle/{id}', [VehicleController::class, 'deleteVehicle'])->name('vehicle.delete');
+});
 
 require __DIR__.'/auth.php';
 

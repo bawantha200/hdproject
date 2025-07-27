@@ -17,7 +17,7 @@
         
         <!-- For Vehicle Providers -->
         @if(auth()->user()->hasRole('provider'))
-            <a href="/vehicles" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800">
+            <a href="/vehicleIndex" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800">
                 <i class="ph ph-truck"></i> My Vehicles
             </a>
             <a href="/booking-requests" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800">
