@@ -51,7 +51,19 @@ Route::get('/vehicle', function () {
     $vehicles = Vehicle::paginate(12);
     $types = Vehicle::query('type');
     $statuses = Vehicle::query('status');
-    return view('frontend.vehicle',['vehicles'=>$vehicles,'types'=>$types,'statuses'=>$statuses]);
+    $search = Vehicle::when('search');
+
+    return view('frontend.vehicle',['vehicles'=>$vehicles,'types'=>$types,'statuses'=>$statuses,'search'=>$search]);
+});
+
+
+Route::get('/showVehicle', function () {
+    $vehicles = Vehicle::paginate(12);
+    $types = Vehicle::query('type');
+    $statuses = Vehicle::query('status');
+
+
+    return view('frontend.showVehicle',['vehicles'=>$vehicles,'types'=>$types,'statuses'=>$statuses]);
 });
 
 Route::get('/about', function () {
@@ -177,9 +189,13 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name
 // // Keep these
 // Route::get('/vehicles/create', [VehicleController::class, 'create']);
 // Route::post('/vehicles', [VehicleController::class, 'store']);
+Route::get('/homeIndex', [VehicleController::class, 'homeIndex'])->name('vehicle.home');
 
-Route::middleware(['auth', 'verified','role:provider'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
 
+
+        
+        Route::get('/myVehicles', [VehicleController::class, 'myVehicles'])->name('vehicles.my');
         Route::get('/vehicleIndex', [VehicleController::class, 'index'])->name('vehicle.index'); 
         Route::post('/storeVehicle', [VehicleController::class, 'storeVehicle'])->name('vehicle.store');
         Route::post('/updateVehicle', [VehicleController::class, 'updateVehicle'])->name('vehicle.update');

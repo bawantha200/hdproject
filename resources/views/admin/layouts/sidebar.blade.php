@@ -7,7 +7,7 @@
                   class="ph ph-gauge"></i> Overview</a>
               <a href="#" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800"><i
                   class="ph ph-calendar-check"></i> Bookings</a>
-              <a href="#" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800"><i class="ph ph-truck"></i>
+              <a href="/vehicleIndex" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800"><i class="ph ph-truck"></i>
                 Vehicles</a>
               <a href="/customer" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800"><i class="ph ph-users"></i>
                 Customers</a>
@@ -73,7 +73,7 @@
 
             <!-- For Vehicle Providers -->
             @if(auth()->user()->hasRole('provider'))
-                <a href="/vehicleIndex" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800">
+                <a href="/myVehicles" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800">
                     <i class="ph ph-truck"></i> My Vehicles
                 </a>
                 <a href="/booking-requests" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800">

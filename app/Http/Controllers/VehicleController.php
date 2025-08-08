@@ -39,12 +39,110 @@ class VehicleController extends Controller
         $statuses = ['available', 'rented', 'maintenance'];
         
         // Paginate the results
-        $vehicles = $query->paginate(10)->withQueryString();
+        $vehicles = $query->latest()->paginate(10)->withQueryString();
         
         
-        return view('customer.vehicles', compact('vehicles', 'types', 'statuses'));
+        return view('admin.home.vehicle', compact('vehicles', 'types', 'statuses'));
+    }
+
+    
+public function myVehicles(Request $request)
+{
+        
+    // Get filter values from request
+        $type = $request->query('type');
+        $status = $request->query('status');
+        
+        // Start building the query
+        $query = Vehicle::query();
+        
+        // Apply filters if they exist
+        if ($type) {
+            $query->where('type', $type);
+        }
+        
+        if ($status) {
+            $query->where('status', $status);
+        }
+        
+        // Get all unique types for filter dropdown
+        $types = Vehicle::distinct()->pluck('type');
+        
+        // Define possible statuses
+        $statuses = ['available', 'rented', 'maintenance'];
+        
+        
+    $perPage = 10; // Items per page
+    $vehicles = Vehicle::where('added_by', auth()->id())
+                    ->latest()
+                    ->paginate($perPage);
+    
+   
+    
+    return view('customer.vehicles', compact('vehicles', 'types', 'statuses'));
+}
+
+public function homeIndex(Request $request)
+{
+    $selectedTypes = $request->input('types', []);
+    $availability = $request->input('availability', 'available');
+    $minPrice = $request->input('min_price', 0);
+    $maxPrice = $request->input('max_price', 1000);
+    $sortOption = $request->input('sort');
+    $searchTerm = $request->input('search');
+    
+    $query = Vehicle::query();
+    
+    // Apply search filter
+    if ($searchTerm) {
+        $query->where(function($q) use ($searchTerm) {
+            $q->where('brand', 'like', '%'.$searchTerm.'%')
+              ->orWhere('model', 'like', '%'.$searchTerm.'%')
+              ->orWhere('type', 'like', '%'.$searchTerm.'%');
+        });
     }
     
+    // Apply type filters
+    if (!empty($selectedTypes)) {
+        $query->whereIn('type', $selectedTypes);
+    }
+    
+    // Apply availability filter
+    if ($availability !== 'all') {
+        $query->where('status', $availability);
+    }
+    
+    // Apply price range filter
+    $query->whereBetween('daily_rate', [$minPrice, $maxPrice]);
+    
+    // Apply sorting
+    switch ($sortOption) {
+        case 'price_low':
+            $query->orderBy('daily_rate', 'asc');
+            break;
+        case 'price_high':
+            $query->orderBy('daily_rate', 'desc');
+            break;
+        case 'newest':
+            $query->orderBy('created_at', 'desc');
+            break;
+        default:
+            $query->orderBy('brand');
+            break;
+    }
+    
+    $vehicles = $query->paginate(10)->appends($request->except('page'));
+    
+    return view('frontend.vehicle', [
+        'vehicles' => $vehicles,
+        'selectedTypes' => $selectedTypes,
+        'selectedAvailability' => $availability,
+        'minPrice' => $minPrice,
+        'maxPrice' => $maxPrice,
+        'sortOption' => $sortOption,
+        'searchTerm' => $searchTerm
+    ]);
+}
 
     /**
      * Show the form for creating a new vehicle.

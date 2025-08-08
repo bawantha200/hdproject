@@ -22,22 +22,26 @@
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
         <h1 class="text-2xl font-bold">Heavy Vehicles Management</h1>
         
-        <div class="flex gap-3 w-full md:w-auto">
+        <div class="flex gap-3 w-full md:w-auto"> 
             <button onclick="openModal('addVehicleModal')" 
                class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
                 Add New Vehicle
             </button>
             
-            <form method="GET" action="{{ route('vehicles.my') }}" class="flex-1 md:w-64">
+            
+            <form method="GET" action="{{ route('vehicle.index') }}" class="flex-1 md:w-64">
                 <select name="type" onchange="this.form.submit()" 
                     class="w-full rounded border-gray-300 focus:border-blue-500 focus:ring-blue-500">
                     <option value="">All Types</option>
-                    <option value="Bulldozers" {{ request('type') == 'Bulldozers' ? 'selected' : '' }}>Bulldozers</option>
-    <option value="Excavators" {{ request('type') == 'Excavators' ? 'selected' : '' }}>Excavators</option>
+                    @foreach($types as $type)
+                        <option value="{{ $type }}" {{ request('type') == $type ? 'selected' : '' }}>
+                            {{ $type }}
+                        </option>
+                    @endforeach
                 </select>
-            </form>
+            </form> 
             
-            <form method="GET" action="{{ route('vehicles.my') }}" class="flex-1 md:w-64">
+            <form method="GET" action="{{ route('vehicle.index') }}}" class="flex-1 md:w-64">
                 <select name="status" onchange="this.form.submit()" 
                     class="w-full rounded border-gray-300 focus:border-blue-500 focus:ring-blue-500">
                     <option value="">All Statuses</option>
@@ -45,7 +49,7 @@
                         <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>
                             {{ ucfirst($status) }}
                         </option>
-                    @endforeach 
+                    @endforeach
                 </select>
             </form>
         </div>
@@ -155,7 +159,7 @@
                 
                 <!-- Daily Rate -->
                 <div>
-                    <label for="daily_rate" class="block text-sm font-medium text-gray-700">Daily Rate (RM)</label>
+                    <label for="daily_rate" class="block text-sm font-medium text-gray-700">Daily Rate (LKR)</label>
                     <input type="number" step="0.01" name="daily_rate" id="daily_rate" required
                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                 </div>
@@ -343,7 +347,7 @@
 
 <!-- JavaScript to handle modals -->
 <script>
-    function openModal(modalId) {
+   function openModal(modalId) {
         document.getElementById(modalId).classList.remove('hidden');
     }
     
@@ -352,7 +356,7 @@
             modal.classList.add('hidden');
         });
     }
-    
+
    
 </script>
 

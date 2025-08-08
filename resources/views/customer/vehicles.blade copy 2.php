@@ -343,6 +343,20 @@
 
 <!-- JavaScript to handle modals -->
 <script>
+    function openModal() {
+        document.getElementById('addVehicleModal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+        document.getElementById('addVehicleModal').classList.add('hidden');
+    }
+
+    // Prevent clicks inside the modal from closing it (optional but good practice)
+    document.querySelector('#addVehicleModal > div').addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+</script>
+<script>
     function openModal(modalId) {
         document.getElementById(modalId).classList.remove('hidden');
     }
@@ -353,7 +367,11 @@
         });
     }
     
-   
+    // Close modal when clicking outside of it
+    window.addEventListener('click', function(event) {
+        if (event.target.classList.contains('fixed')) {
+            closeModal();
+        }
+    });
 </script>
-
 @endsection

@@ -5,18 +5,19 @@
         <!-- Filter Sidebar -->
         <div class="col-md-3">
             <div class="card shadow-sm" style="top: 20px;">
-                <div class="card-header bg-primary text-white">
+                <div class="card-header bg-dark text-white">
                     <h5 class="mb-0">Filter Vehicles</h5>
                 </div>
                 <div class="card-body">
-                    <form id="filterForm" method="GET" action="{{ route('vehicle.index') }}">
+                    <form id="filterForm" method="GET" action="{{ route('vehicle.home') }}">
                         <!-- Search Option -->
                         <div class="mb-4">
                             <label for="search" class="form-label">Search Vehicles</label>
                             <div class="input-group">
                                 <input type="text" class="form-control" id="search" name="search" 
-                                       placeholder="Search by name..." value="{{ request('search') }}">
-                                <button class="btn btn-outline-primary" type="submit">
+                                    placeholder="Search by name, brand or model..." 
+                                    value="{{ request('search') }}">
+                                <button class="btn btn-outline-dark" type="submit">
                                     <i class="fas fa-search"></i>
                                 </button>
                             </div>
@@ -26,41 +27,29 @@
                         <div class="mb-4">
                             <label class="form-label">Price Range</label>
                             <div class="d-flex justify-content-between mb-2">
-                                <span>$0</span>
-                                <span>$1000+</span>
+                                <span>LKR 0</span>
+                                <span>LKR 10000+</span>
                             </div>
-                            <input type="range" class="form-range" id="priceRange" min="0" max="1000" 
+                            <input type="range" class="form-range" id="priceRange" min="0" max="100000" 
                                    oninput="updatePriceValues(this.value)" 
-                                   value="{{ request('max_price', 1000) }}">
+                                   value="{{ request('max_price', 100000) }}">
                             <div class="d-flex justify-content-between mt-2">
-                                <span id="minPrice">$0</span>
+                                <span id="minPrice">LKR 0</span>
                                 <input type="hidden" id="minPriceInput" name="min_price" value="{{ request('min_price', 0) }}">
-                                <span id="maxPrice">${{ request('max_price', 1000) }}</span>
-                                <input type="hidden" id="maxPriceInput" name="max_price" value="{{ request('max_price', 1000) }}">
+                                <span id="maxPrice">LKR {{ request('max_price', 100000) }}</span>
+                                <input type="hidden" id="maxPriceInput" name="max_price" value="{{ request('max_price', 100000) }}">
                             </div>
                         </div>
                         
-                        <!-- Sort Options -->
-                        <div class="mb-4">
-                            <label class="form-label">Sort By</label>
-                            <select class="form-select" name="sort">
-                                <option value="">Default</option>
-                                <option value="price_low" {{ request('sort') == 'price_low' ? 'selected' : '' }}>Price: Low to High</option>
-                                <option value="price_high" {{ request('sort') == 'price_high' ? 'selected' : '' }}>Price: High to Low</option>
-                                <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest First</option>
-                                <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Oldest First</option>
-                            </select>
-                        </div>
-
                         <!-- Vehicle Type -->
                         <div class="mb-4">
                             <label class="form-label">Vehicle Type</label>
-                            @foreach(['Dozers', 'Backhoes', 'Cranes', 'Trucks', 'Excavators'] as $type)
+                            @foreach(['Dozers', 'Backhoes', 'Cranes', 'Trucks', 'Excavators','Rollers'] as $type)
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" 
                                        name="types[]" id="{{ strtolower($type) }}" 
                                        value="{{ $type }}"
-                                       {{ in_array($type, (array)request('types', [])) ? 'checked' : '' }}>
+                                       {{ in_array($type, (array)request('types', [])) ? 'checked' : '' }} onchange="this.form.submit()">
                                 <label class="form-check-label" for="{{ strtolower($type) }}">{{ $type }}</label>
                             </div>
                             @endforeach
@@ -71,22 +60,28 @@
                             <label class="form-label">Availability</label>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="availability" 
-                                       id="available" value="available" 
-                                       {{ request('availability', 'available') == 'available' ? 'checked' : '' }}>
-                                <label class="form-check-label" for="available">Available Only</label>
+                                    id="available" value="available" 
+                                    {{ request('availability', 'available') == 'available' ? 'checked' : '' }} onchange="this.form.submit()">
+                                <label class="form-check-label" for="available">Available</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="availability" 
-                                       id="all" value="all" 
-                                       {{ request('availability') == 'all' ? 'checked' : '' }}>
-                                <label class="form-check-label" for="all">Show All</label>
+                                    id="rented" value="rented" 
+                                    {{ request('availability') == 'rented' ? 'checked' : '' }} onchange="this.form.submit()">
+                                <label class="form-check-label" for="rented">Rented</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="availability" 
+                                    id="maintenance" value="maintenance" 
+                                    {{ request('availability') == 'all' ? 'checked' : '' }} onchange="this.form.submit()">
+                                <label class="form-check-label" for="all">Maintenance</label>
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100">
+                        <button type="submit" class="btn btn-dark w-100">
                             <i class="fas fa-filter"></i> Apply Filters
                         </button>
-                        <a href="{{ route('vehicle.index') }}" class="btn btn-outline-secondary w-100 mt-2">
+                        <a href="{{ route('vehicle.home') }}" class="btn btn-outline-secondary w-100 mt-2">
                             <i class="fas fa-undo"></i> Reset
                         </a>
                     </form>
@@ -146,7 +141,7 @@
     });
 
     function updatePriceValues(value) {
-        document.getElementById('maxPrice').textContent = '$' + value;
+        document.getElementById('maxPrice').textContent = 'LKR ' + value;
         document.getElementById('maxPriceInput').value = value;
     }
 </script>
