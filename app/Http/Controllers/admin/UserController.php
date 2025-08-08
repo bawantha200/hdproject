@@ -81,4 +81,46 @@ class UserController extends Controller
         return redirect()->back()->with('success','User deleted successfully!');
     }
 
+
+
+
+
+
+    public function indexCustomer()
+{
+    $query = User::query()
+        ->whereHas('roles', function($query) {
+            $query->whereIn('name', ['provider', 'renter']);
+        })
+        ->with('roles');
+
+    // Apply role filter if selected
+    if(request()->has('role')) {
+        $query->whereHas('roles', function($query) {
+            $query->where('name', request('role'));
+        });
+    }
+
+    // Apply status filter if selected
+    if(request()->has('status')) {
+        $query->where('status', request('status'));
+    }
+
+    // Apply search filter
+    if(request()->has('search')) {
+        $search = request('search');
+        $query->where(function($q) use ($search) {
+            $q->where('name', 'like', "%$search%")
+              ->orWhere('email', 'like', "%$search%");
+        });
+    }
+
+    $users = $query->orderBy('created_at', 'desc')->paginate(10);
+
+    $roles = Role::whereIn('name', ['provider', 'renter'])
+            ->pluck('name', 'name')
+            ->all();
+
+    return view('admin.home.customer', compact('users', 'roles'));
+}
 }

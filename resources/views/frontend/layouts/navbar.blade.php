@@ -72,7 +72,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item d-flex align-items-center px-3 py-2" href="{{ route('profile') }}">
+                                <a class="dropdown-item d-flex align-items-center px-3 py-2" href="/profileIndex">
                                     <i class="bi bi-person me-2"></i> My Profile
                                 </a>
                             </li>

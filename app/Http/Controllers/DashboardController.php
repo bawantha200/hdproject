@@ -22,7 +22,12 @@ class DashboardController extends Controller
         }
         
         if ($user->hasAnyRole(['provider', 'renter'])) {
-            return view('customer.dashboard', [
+            return view('admin.dashboard', [
+                'user' => $user,
+                'isProvider' => $user->hasRole('provider'),
+                'isRenter' => $user->hasRole('renter')
+            ]);
+            return view('admin.vehicles', [
                 'user' => $user,
                 'isProvider' => $user->hasRole('provider'),
                 'isRenter' => $user->hasRole('renter')

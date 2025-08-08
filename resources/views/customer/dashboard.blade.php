@@ -1,6 +1,7 @@
 @extends('customer.layouts.master')
 @section('content')
 
+
 <div class="col-12 col-md-9 col-lg-10 p-4">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <!-- Stats Cards -->

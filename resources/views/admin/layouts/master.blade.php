@@ -9,6 +9,7 @@
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
    <link rel="stylesheet" href="{{asset('frontend/css/styles.css')}}">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   <link rel="icon" href="{{ asset('frontend/images/favicon.ico') }}">
 </head>
 
 <body class="bg-gray-100 font-sans">
@@ -21,7 +22,7 @@
     <div class="flex min-h-screen">
         <!-- Sidebar -->
             
-            @include('admin.layouts.sidebar1')
+            @include('admin.layouts.sidebar')
 
             <!-- Main content -->
              <div class="col-12 col-md-9 col-lg-10 p-4">

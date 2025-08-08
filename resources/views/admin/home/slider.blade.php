@@ -37,6 +37,7 @@
       <form action="/saveSlider" method="POST" enctype="multipart/form-data">
 
         @csrf
+       
             <div class="modal-body">
                 <!--heading-->
                 <div class="mb-3">

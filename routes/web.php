@@ -13,6 +13,9 @@ use App\Http\Controllers\VehicleController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Slider;
 use App\Models\Gallery;
+use App\Models\User;
+use App\Models\Vehicle;
+use Illuminate\Http\Request;
 
 Route::get('/welcome', function () {
     return view('welcome');
@@ -35,8 +38,8 @@ Route::get('/dashboard/customer', function () {
 
 Route::get('/', function () {
     $sliders = Slider::all();
-
-    return view('frontend.home',compact('sliders'));
+    $users = User::all();
+    return view('frontend.home',compact('sliders','users'));
 });
 
 Route::get('/gallery', function () {
@@ -45,7 +48,10 @@ Route::get('/gallery', function () {
 });
 
 Route::get('/vehicle', function () {
-    return view('frontend.vehicle');
+    $vehicles = Vehicle::paginate(12);
+    $types = Vehicle::query('type');
+    $statuses = Vehicle::query('status');
+    return view('frontend.vehicle',['vehicles'=>$vehicles,'types'=>$types,'statuses'=>$statuses]);
 });
 
 Route::get('/about', function () {
@@ -56,9 +62,9 @@ Route::get('/contact', function () {
     return view('frontend.contact');
 });
 
-// Route::get('/dashboard', function () {
-//     return view('admin.dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', function () {
+    return view('admin.dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
@@ -79,18 +85,14 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
 
 
 // Profile routes
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth','verified'])->group(function () {
     Route::get('/profileIndex', [ProfileController::class, 'index'])->name('index');
     Route::put('/profileUpdate', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
 });
 
-// Route::controller(SliderController::class)->middleware(['auth','verified'])->group(function(){
-//     Route::get('/SliderIndex',[SliderController::class, 'Index'])->name('slider.index');
-// }); 
 
-
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified','role:admin|manager'])->group(function () {
     // Prefix URL with '/slider' and route names with 'slider.'
  
         Route::get('/SliderIndex', [SliderController::class, 'Index'])->name('index'); // URL: /slider/index
@@ -141,18 +143,18 @@ Route::middleware(['auth', 'verified','role:admin'])->group(function () {
 });
 
 // 'role:admin'
-Route::get('/profile', function () {
-    return view('profile');
-})->middleware(['auth'])->name('profile');
+// Route::get('/profile', function () {
+//     return view('profile');
+// })->middleware(['auth'])->name('profile');
 
 // Laravel Breeze/Fortify already provides these:
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+// Route::get('/dashboard', [DashboardController::class, 'index'])
+//     ->middleware(['auth', 'verified'])
+//     ->name('dashboard');
 
 
 // Route::get('/vehicles', function () {
@@ -176,13 +178,19 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 // Route::get('/vehicles/create', [VehicleController::class, 'create']);
 // Route::post('/vehicles', [VehicleController::class, 'store']);
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified','role:provider'])->group(function () {
 
-        Route::get('/vehicleIndex', [VehicleController::class, 'index'])->name('index'); 
+        Route::get('/vehicleIndex', [VehicleController::class, 'index'])->name('vehicle.index'); 
         Route::post('/storeVehicle', [VehicleController::class, 'storeVehicle'])->name('vehicle.store');
         Route::post('/updateVehicle', [VehicleController::class, 'updateVehicle'])->name('vehicle.update');
         Route::get('/deleteVehicle/{id}', [VehicleController::class, 'deleteVehicle'])->name('vehicle.delete');
 });
+
+Route::middleware(['auth', 'verified','role:admin|manager'])->group(function () {
+
+        Route::get('/customer', [UserController::class, 'indexCustomer'])->name('customer.index'); 
+});
+
 
 require __DIR__.'/auth.php';
 
