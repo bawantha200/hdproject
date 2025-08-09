@@ -13,11 +13,12 @@ class Vehicle extends Model
     protected $fillable = [
         'brand',
         'model',
-        'type',
+        'category_id',
         'registration_number',
         'daily_rate',
         'status',
         'description',
+        'image',
         'added_by'
     ];
 
@@ -88,6 +89,10 @@ public function scopeStatusFilter($query, $status)
         ];
     }
 
+   public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
 
 
 

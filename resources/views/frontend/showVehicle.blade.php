@@ -12,7 +12,7 @@
                         <i class="fas fa-check-circle me-2"></i>Available
                     </span>
                     <span class="badge bg-primary fs-6 py-2 px-3">
-                        <i class="fas fa-tag me-2"></i>{{ $vehicle->type }}
+                        <i class="fas fa-tag me-2"></i>{{ $vehicle->category->name }}
                     </span>
                     @if($vehicle->is_featured)
                         <span class="badge bg-warning text-dark fs-6 py-2 px-3">

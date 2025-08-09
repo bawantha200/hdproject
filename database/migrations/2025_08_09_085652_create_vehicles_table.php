@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('brand');
             $table->string('model');
-            $table->enum('type', ['Bulldozers, Excavators, Backhoes, Trucks, Rollers, Cranes, Forklifts']);
+            $table->bigInteger('category_id')->unsigned()->nullable();
             $table->string('registration_number')->unique();
             $table->decimal('daily_rate', 10, 2);
             $table->string('status')->default('available');

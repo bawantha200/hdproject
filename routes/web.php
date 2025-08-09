@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\SliderController;
 use App\Http\Controllers\admin\GalleryController;
 use App\Http\Controllers\admin\PermissionController;
@@ -10,6 +12,7 @@ use App\Http\Controllers\customer\ProviderController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VehicleController;
+use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 use App\Models\Slider;
 use App\Models\Gallery;
@@ -49,11 +52,11 @@ Route::get('/gallery', function () {
 
 Route::get('/vehicle', function () {
     $vehicles = Vehicle::paginate(12);
-    $types = Vehicle::query('type');
+    $categories = Category::all();
     $statuses = Vehicle::query('status');
     $search = Vehicle::when('search');
 
-    return view('frontend.vehicle',['vehicles'=>$vehicles,'types'=>$types,'statuses'=>$statuses,'search'=>$search]);
+    return view('frontend.vehicle',['vehicles'=>$vehicles,'categories'=>$categories,'statuses'=>$statuses,'search'=>$search]);
 });
 
 
@@ -152,6 +155,14 @@ Route::middleware(['auth', 'verified','role:admin'])->group(function () {
         Route::post('/updateUser', [UserController::class, 'updateUser'])->name('user.update');
         Route::get('/deleteUser/{id}', [UserController::class, 'deleteUser'])->name('user.delete');
 
+});
+
+Route::middleware(['auth', 'verified','role:admin|manager'])->group(function () {
+ 
+        Route::get('/CategoryIndex', [CategoryController::class, 'Index'])->name('category.index'); 
+        Route::post('/saveCategory', [CategoryController::class, 'storeCategory'])->name('category.store');
+        Route::post('/updateCategory', [CategoryController::class, 'updateCategory'])->name('category.update');
+        Route::get('/deleteCategory/{id}', [CategoryController::class, 'deleteCategory'])->name('category.delete');
 });
 
 // 'role:admin'

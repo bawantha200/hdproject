@@ -22,22 +22,26 @@
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
         <h1 class="text-2xl font-bold">Heavy Vehicles Management</h1>
         
-        <div class="flex gap-3 w-full md:w-auto">
+        <div class="flex gap-3 w-full md:w-auto"> 
             <button onclick="openModal('addVehicleModal')" 
                class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
                 Add New Vehicle
             </button>
             
-            <form method="GET" action="{{ route('vehicles.my') }}" class="flex-1 md:w-64">
+            
+            <form method="GET" action="{{ route('vehicle.index') }}" class="flex-1 md:w-64">
                 <select name="type" onchange="this.form.submit()" 
                     class="w-full rounded border-gray-300 focus:border-blue-500 focus:ring-blue-500">
-                    <option value="">All Types</option>
-                    <option value="Bulldozers" {{ request('type') == 'Bulldozers' ? 'selected' : '' }}>Bulldozers</option>
-    <option value="Excavators" {{ request('type') == 'Excavators' ? 'selected' : '' }}>Excavators</option>
+                    <option value="">All Categories</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>
+                            {{ $category }}
+                        </option>
+                    @endforeach
                 </select>
-            </form>
+            </form> 
             
-            <form method="GET" action="{{ route('vehicles.my') }}" class="flex-1 md:w-64">
+            <form method="GET" action="{{ route('vehicle.index') }}}" class="flex-1 md:w-64">
                 <select name="status" onchange="this.form.submit()" 
                     class="w-full rounded border-gray-300 focus:border-blue-500 focus:ring-blue-500">
                     <option value="">All Statuses</option>
@@ -45,7 +49,7 @@
                         <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>
                             {{ ucfirst($status) }}
                         </option>
-                    @endforeach 
+                    @endforeach
                 </select>
             </form>
         </div>
@@ -69,7 +73,7 @@
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="font-medium text-gray-900">{{ $vehicle->brand }} {{ $vehicle->model }}</div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ $vehicle->type }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ $vehicle->category->name }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-gray-500">{{ $vehicle->registration_number }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-gray-500">LKR {{ number_format($vehicle->daily_rate, 2) }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
@@ -78,7 +82,7 @@
                                ($vehicle->status == 'maintenance' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
                             {{ ucfirst($vehicle->status) }}
                         </span>
-                    </td>
+                    </td> 
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <button onclick="openModal('editVehicleModal{{ $vehicle->id }}')" class="text-yellow-600 hover:text-yellow-900 mr-3">Edit</button>
                         <button onclick="openModal('deleteVehicleModal{{ $vehicle->id }}')" class="text-red-600 hover:text-red-900">Delete</button>
@@ -132,17 +136,13 @@
                 
                 <!-- Type -->
                 <div>
-                    <label for="type" class="block text-sm font-medium text-gray-700">Type</label>
-                    <select name="type" id="type" required
+                    <label for="category_id" class="block text-sm font-medium text-gray-700">Category</label>
+                    <select name="category_id" id="category_id" required
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                        <option value="">Select Vehicle Type</option>
-                        <option value="Bulldozers">Bulldozers</option>
-                        <option value="Excavators">Excavators</option>
-                        <option value="Backhoes">Backhoes</option>
-                        <option value="Trucks">Trucks</option>
-                        <option value="Rollers">Rollers</option>
-                        <option value="Cranes">Cranes</option>
-                        <option value="Forklifts">Forklifts</option>
+                        <option value="">Select Vehicle Category</option>
+                        @foreach ($categories as $category)
+                        <option value="{{$category->id}}">{{$category->name}}</option>
+                        @endforeach 
                     </select>
                 </div>
                 
@@ -155,7 +155,7 @@
                 
                 <!-- Daily Rate -->
                 <div>
-                    <label for="daily_rate" class="block text-sm font-medium text-gray-700">Daily Rate (RM)</label>
+                    <label for="daily_rate" class="block text-sm font-medium text-gray-700">Daily Rate (LKR)</label>
                     <input type="number" step="0.01" name="daily_rate" id="daily_rate" required
                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                 </div>
@@ -236,16 +236,12 @@
                 
                 <!-- Type -->
                 <div>
-                    <label for="type" class="block text-sm font-medium text-gray-700">Type</label>
-                    <select name="type" id="type" required
+                    <label for="category_id" class="block text-sm font-medium text-gray-700">Category</label>
+                    <select name="category_id" id="category_id" required
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                        <option value="Bulldozers" {{ $vehicle->type == 'Bulldozers' ? 'selected' : '' }}>Bulldozers</option>
-                        <option value="Excavators" {{ $vehicle->type == 'Excavators' ? 'selected' : '' }}>Excavators</option>
-                        <option value="Backhoes" {{ $vehicle->type == 'Backhoes' ? 'selected' : '' }}>Backhoes</option>
-                        <option value="Trucks" {{ $vehicle->type == 'Trucks' ? 'selected' : '' }}>Trucks</option>
-                        <option value="Rollers" {{ $vehicle->type == 'Rollers' ? 'selected' : '' }}>Rollers</option>
-                        <option value="Cranes" {{ $vehicle->type == 'Cranes' ? 'selected' : '' }}>Cranes</option>
-                        <option value="Forklifts" {{ $vehicle->type == 'Forklifts' ? 'selected' : '' }}>Forklifts</option>
+                         @foreach ($categories as $category)
+                                    <option value="{{$category->id}}" {{$vehicle->category_id == $category->id ? 'selected':''}}>{{$category->name}}</option>
+                                    @endforeach
                     </select>
                 </div>
                 
@@ -321,7 +317,7 @@
             <div class="bg-gray-100 p-4 rounded">
                 <h4 class="font-medium">{{ $vehicle->brand }} {{ $vehicle->model }}</h4>
                 <p class="text-sm text-gray-600">Registration: {{ $vehicle->registration_number }}</p>
-                <p class="text-sm text-gray-600">Type: {{ $vehicle->type }}</p>
+                <p class="text-sm text-gray-600">Type: {{ $vehicle->category->name }}</p>
             </div>
             
             <form method="GET" action="/deleteVehicle/{{ $vehicle->id }}" class="mt-6 flex justify-end space-x-3">
@@ -343,7 +339,7 @@
 
 <!-- JavaScript to handle modals -->
 <script>
-    function openModal(modalId) {
+   function openModal(modalId) {
         document.getElementById(modalId).classList.remove('hidden');
     }
     
@@ -352,7 +348,7 @@
             modal.classList.add('hidden');
         });
     }
-    
+
    
 </script>
 

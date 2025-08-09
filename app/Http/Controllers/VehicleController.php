@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Vehicle;
 use App\Models\User;
 use Illuminate\Container\Attributes\Auth;
@@ -17,23 +18,23 @@ class VehicleController extends Controller
     public function index(Request $request)
     {
         // Get filter values from request
-        $type = $request->query('type');
+        $category_id = $request->query('category_id');
         $status = $request->query('status');
         
         // Start building the query
         $query = Vehicle::query();
         
         // Apply filters if they exist
-        if ($type) {
-            $query->where('type', $type);
+        if ($category_id) {
+            $query->where('category_id', $category_id);
         }
         
         if ($status) {
             $query->where('status', $status);
         }
         
-        // Get all unique types for filter dropdown
-        $types = Vehicle::distinct()->pluck('type');
+        // Get all categories for filter dropdown
+        $categories = Category::all();
         
         // Define possible statuses
         $statuses = ['available', 'rented', 'maintenance'];
@@ -41,50 +42,42 @@ class VehicleController extends Controller
         // Paginate the results
         $vehicles = $query->latest()->paginate(10)->withQueryString();
         
-        
-        return view('admin.home.vehicle', compact('vehicles', 'types', 'statuses'));
+        return view('admin.home.vehicle', compact('vehicles', 'categories', 'statuses'));
     }
-
     
 public function myVehicles(Request $request)
-{
-        
-    // Get filter values from request
-        $type = $request->query('type');
+    {
+        // Get filter values from request
+        $category_id = $request->query('category_id');
         $status = $request->query('status');
         
         // Start building the query
-        $query = Vehicle::query();
+        $query = Vehicle::where('added_by', auth()->id());
         
         // Apply filters if they exist
-        if ($type) {
-            $query->where('type', $type);
+        if ($category_id) {
+            $query->where('category_id', $category_id);
         }
         
         if ($status) {
             $query->where('status', $status);
         }
         
-        // Get all unique types for filter dropdown
-        $types = Vehicle::distinct()->pluck('type');
+        // Get all categories for filter dropdown
+        $categories = Category::all();
         
         // Define possible statuses
         $statuses = ['available', 'rented', 'maintenance'];
         
+        $perPage = 10; // Items per page
+        $vehicles = $query->latest()->paginate($perPage);
         
-    $perPage = 10; // Items per page
-    $vehicles = Vehicle::where('added_by', auth()->id())
-                    ->latest()
-                    ->paginate($perPage);
-    
-   
-    
-    return view('customer.vehicles', compact('vehicles', 'types', 'statuses'));
-}
+        return view('customer.vehicles', compact('vehicles', 'categories', 'statuses'));
+    }
 
 public function homeIndex(Request $request)
 {
-    $selectedTypes = $request->input('types', []);
+    $selectedCategories = $request->input('categories', []);
     $availability = $request->input('availability', 'available');
     $minPrice = $request->input('min_price', 0);
     $maxPrice = $request->input('max_price', 1000);
@@ -98,13 +91,17 @@ public function homeIndex(Request $request)
         $query->where(function($q) use ($searchTerm) {
             $q->where('brand', 'like', '%'.$searchTerm.'%')
               ->orWhere('model', 'like', '%'.$searchTerm.'%')
-              ->orWhere('type', 'like', '%'.$searchTerm.'%');
+              ->orWhereHas('category', function($q) use ($searchTerm) {
+                  $q->where('name', 'like', '%'.$searchTerm.'%');
+              });
         });
     }
     
-    // Apply type filters
-    if (!empty($selectedTypes)) {
-        $query->whereIn('type', $selectedTypes);
+    // Apply category filters
+    if (!empty($selectedCategories)) {
+        $query->whereHas('category', function($q) use ($selectedCategories) {
+            $q->whereIn('id', $selectedCategories);
+        });
     }
     
     // Apply availability filter
@@ -130,17 +127,18 @@ public function homeIndex(Request $request)
             $query->orderBy('brand');
             break;
     }
-    
+$categories = Category::all();
     $vehicles = $query->paginate(10)->appends($request->except('page'));
     
     return view('frontend.vehicle', [
         'vehicles' => $vehicles,
-        'selectedTypes' => $selectedTypes,
+        'selectedCategories' => $selectedCategories,
         'selectedAvailability' => $availability,
         'minPrice' => $minPrice,
         'maxPrice' => $maxPrice,
         'sortOption' => $sortOption,
-        'searchTerm' => $searchTerm
+        'searchTerm' => $searchTerm,
+        'categories'=> $categories,
     ]);
 }
 
@@ -162,13 +160,12 @@ public function homeIndex(Request $request)
         $validated = $request->validate([
             'brand' => 'required|string|max:255',
             'model' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id', // Changed from type to category_id
             'registration_number' => 'required|string|max:255|unique:vehicles',
             'daily_rate' => 'required|numeric|min:0',
             'status' => 'required|string|in:available,rented,maintenance',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'added_by' => '$user->id',
         ]);
         
         // Handle image upload
@@ -211,41 +208,41 @@ public function homeIndex(Request $request)
      * Update the specified vehicle in storage.
      */
     public function updateVehicle(Request $request) {
-    $validatedData = $request->validate([
-        'vehicle_id' => 'required|exists:vehicles,id',
-        'brand' => 'required|string|max:255',
-        'model' => 'required|string|max:255',
-        'type' => 'required|string|max:255',
-        'registration_number' => 'required|string|max:255',
-        'daily_rate' => 'required|numeric|min:0',
-        'status' => 'required|string|in:available,rented,maintenance',
-        'description' => 'nullable|string',
-        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-    ]);
+        $validatedData = $request->validate([
+            'vehicle_id' => 'required|exists:vehicles,id',
+            'brand' => 'required|string|max:255',
+            'model' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id', // Changed from type to category_id
+            'registration_number' => 'required|string|max:255',
+            'daily_rate' => 'required|numeric|min:0',
+            'status' => 'required|string|in:available,rented,maintenance',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-    $update = Vehicle::findOrfail($request->vehicle_id);
-    $update->brand = $validatedData['brand'];
-    $update->model = $validatedData['model'];
-    $update->type = $validatedData['type'];
-    $update->registration_number = $validatedData['registration_number'];
-    $update->daily_rate = $validatedData['daily_rate'];
-    $update->status = $validatedData['status'];
-    $update->description = $validatedData['description'];
+        $update = Vehicle::findOrfail($request->vehicle_id);
+        $update->brand = $validatedData['brand'];
+        $update->model = $validatedData['model'];
+        $update->category_id = $validatedData['category_id']; // Changed from type to category_id
+        $update->registration_number = $validatedData['registration_number'];
+        $update->daily_rate = $validatedData['daily_rate'];
+        $update->status = $validatedData['status'];
+        $update->description = $validatedData['description'];
 
-    if($request->hasFile('image')) {
-        // Delete old image if it exists
-        if ($update->image) {
-            Storage::delete('public/' . $update->image);
+        if($request->hasFile('image')) {
+            // Delete old image if it exists
+            if ($update->image) {
+                Storage::delete('public/' . $update->image);
+            }
+            
+            $imagePath = $request->file('image')->store('vehicles', 'public');
+            $update->image = $imagePath;
         }
-        
-        $imagePath = $request->file('image')->store('vehicles', 'public');
-        $update->image = $imagePath;
+
+        $update->save();
+
+        return redirect()->back()->with('success', 'Vehicle updated successfully!');
     }
-
-    $update->save();
-
-    return redirect()->back()->with('success', 'Vehicle updated successfully!');
-}
 
     /**
      * Remove the specified vehicle from storage.

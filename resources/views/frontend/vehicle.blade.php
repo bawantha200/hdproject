@@ -41,16 +41,19 @@
                             </div>
                         </div>
                         
-                        <!-- Vehicle Type -->
+                        <!-- Vehicle Categories -->
                         <div class="mb-4">
-                            <label class="form-label">Vehicle Type</label>
-                            @foreach(['Dozers', 'Backhoes', 'Cranes', 'Trucks', 'Excavators','Rollers'] as $type)
+                            <label class="form-label">Vehicle Categories</label>
+                            @foreach($categories as $category)
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" 
-                                       name="types[]" id="{{ strtolower($type) }}" 
-                                       value="{{ $type }}"
-                                       {{ in_array($type, (array)request('types', [])) ? 'checked' : '' }} onchange="this.form.submit()">
-                                <label class="form-check-label" for="{{ strtolower($type) }}">{{ $type }}</label>
+                                       name="categories[]" id="category_{{ $category->id }}" 
+                                       value="{{ $category->id }}"
+                                       {{ in_array($category->id, (array)request('categories', [])) ? 'checked' : '' }} 
+                                       onchange="this.form.submit()">
+                                <label class="form-check-label" for="category_{{ $category->id }}">
+                                    {{ $category->name }}
+                                </label>
                             </div>
                             @endforeach
                         </div>
@@ -72,9 +75,9 @@
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="availability" 
-                                    id="maintenance" value="maintenance" 
+                                    id="all" value="all" 
                                     {{ request('availability') == 'all' ? 'checked' : '' }} onchange="this.form.submit()">
-                                <label class="form-check-label" for="all">Maintenance</label>
+                                <label class="form-check-label" for="all">Show All</label>
                             </div>
                         </div>
 
@@ -117,9 +120,7 @@
             </div>
 
             <div class="row">
-               
-                    @include('frontend.home.vehicle')
-               
+                @include('frontend.home.vehicle')
             </div>
 
             <!-- Pagination -->

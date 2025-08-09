@@ -17,6 +17,9 @@
                 Reports</a>
               <a href="/profileIndex" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800">
                 <i class="ph ph-user"></i> Profile</a>
+              <a href="/CategoryIndex" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800">
+                <i class="ph ph-user"></i> Category</a>
+                
               <a href="/SliderIndex" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800"><i
                   class="ph ph-sliders-horizontal"></i> Page Settings</a>
               <a href="/GalleryIndex" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800"><i class="ph ph-image"></i>

@@ -1,9 +1,12 @@
 <?php
+
+// database/migrations/[timestamp]_create_vehicle_images_table.php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateVehicleImagesTable extends Migration
+return new class extends Migration
 {
     public function up()
     {
@@ -19,4 +22,4 @@ class CreateVehicleImagesTable extends Migration
     {
         Schema::dropIfExists('vehicle_images');
     }
-}
+};

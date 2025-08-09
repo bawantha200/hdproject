@@ -9,7 +9,7 @@
     {{ ucfirst($vehicle->status) }}
 </span>
                             
-                            <span class="badge bg-primary position-absolute top-0 start-0 m-2">{{$vehicle->type}}</span>
+                            <span class="badge bg-primary position-absolute top-0 start-0 m-2">{{$vehicle->category->name}}</span>
                         </div>
                         <div class="card-body">
                             <h5 class="card-title">{{$vehicle->brand}} {{$vehicle->model}}</h5>
