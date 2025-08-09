@@ -4,8 +4,84 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ca84efb240a62738a76f8e2699476248",
+    "content-hash": "1cfd0a87253fb24b820bc99bf67322ed",
     "packages": [
+        {
+            "name": "anayarojo/shoppingcart",
+            "version": "4.2.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/anayarojo/laravel-shopping-cart.git",
+                "reference": "776023ad546b7b54a680f783b84cc55bc3fa1a77"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/anayarojo/laravel-shopping-cart/zipball/776023ad546b7b54a680f783b84cc55bc3fa1a77",
+                "reference": "776023ad546b7b54a680f783b84cc55bc3fa1a77",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/events": "5.4.*||5.5.*||5.6.*||5.7.*||5.8.*||^6.0||^7.0||^8.0||^9.0||^10||^11||^12.0",
+                "illuminate/session": "5.4.*||5.5.*||5.6.*||5.7.*||5.8.*||^6.0||^7.0||^8.0||^9.0||^10||^11||^12.0",
+                "illuminate/support": "5.4.*||5.5.*||5.6.*||5.7.*||5.8.*||^6.0||^7.0||^8.0||^9.0||^10||^11||^12.0",
+                "nesbot/carbon": "~1.20||^1.26.3||^2.0||^3.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.0",
+                "orchestra/testbench": "^3.4|^4.0|^5.0|^6.0|^9.0|^10.0",
+                "phpunit/phpunit": "~5.0||~6.0||~7.0||~8.0||~9.0||~10.0||~11.0"
+            },
+            "suggest": {
+                "gloudemans/notify": "Simple flash notifications for Laravel"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Cart": "Gloudemans\\Shoppingcart\\Facades\\Cart"
+                    },
+                    "providers": [
+                        "Gloudemans\\Shoppingcart\\ShoppingcartServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Gloudemans\\Shoppingcart\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rob Gloudemans",
+                    "email": "info@robgloudemans.nl",
+                    "homepage": "http://robgloudemans.nl/"
+                },
+                {
+                    "name": "Patrick Henninger",
+                    "email": "privat@skyraptor.eu",
+                    "homepage": "https://skyraptor.eu/"
+                },
+                {
+                    "name": "Raul Anaya Rojo",
+                    "email": "isw.anayarojo@gmail.com",
+                    "homepage": "https://anayarojo.net/"
+                }
+            ],
+            "description": "Laravel Shoppingcart",
+            "keywords": [
+                "laravel",
+                "shoppingcart"
+            ],
+            "support": {
+                "issues": "https://github.com/anayarojo/laravel-shopping-cart/issues",
+                "source": "https://github.com/anayarojo/laravel-shopping-cart/tree/4.2.4"
+            },
+            "time": "2025-03-05T22:20:00+00:00"
+        },
         {
             "name": "brick/math",
             "version": "0.13.1",
@@ -3557,6 +3633,70 @@
                 }
             ],
             "time": "2025-06-05T07:33:07+00:00"
+        },
+        {
+            "name": "surfsidemedia/shoppingcart",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/surfsidemedia/LaravelShoppingcart.git",
+                "reference": "55cb634d3d5e7834b67cb4e15cb8b71e31546ae4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/surfsidemedia/LaravelShoppingcart/zipball/55cb634d3d5e7834b67cb4e15cb8b71e31546ae4",
+                "reference": "55cb634d3d5e7834b67cb4e15cb8b71e31546ae4",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/events": "5.1.*|5.2.*|5.3.*|5.4.*|5.5.*|5.6.*|5.7.*|5.8.*|^6|^7|^8|^9|^10|^11|^12",
+                "illuminate/session": "5.1.*|5.2.*|5.3.*|5.4.*|5.5.*|5.6.*|5.7.*|5.8.*|^6|^7|^8|^9|^10|^11|^12",
+                "illuminate/support": "5.1.*|5.2.*|5.3.*|5.4.*|5.5.*|5.6.*|5.7.*|5.8.*|^6|^7|^8|^9|^10|^11|^12"
+            },
+            "require-dev": {
+                "mockery/mockery": "~1.6",
+                "orchestra/testbench": "~3.1",
+                "phpunit/phpunit": "~5.0 || ~6.0 || ~7.0 || ~10.0 || ^10.5 || ^11.5"
+            },
+            "suggest": {
+                "Surfsidemedia/notify": "Simple flash notifications for Laravel"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Cart": "Surfsidemedia\\Shoppingcart\\Facades\\Cart"
+                    },
+                    "providers": [
+                        "Surfsidemedia\\Shoppingcart\\ShoppingcartServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Surfsidemedia\\Shoppingcart\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sudhir Kumar",
+                    "email": "surfsidesmedia@gmail.com"
+                }
+            ],
+            "description": "Laravel Shoppingcart",
+            "keywords": [
+                "laravel",
+                "shoppingcart"
+            ],
+            "support": {
+                "issues": "https://github.com/surfsidemedia/LaravelShoppingcart/issues",
+                "source": "https://github.com/surfsidemedia/LaravelShoppingcart/tree/v2.0.0"
+            },
+            "time": "2025-03-27T16:52:51+00:00"
         },
         {
             "name": "symfony/clock",

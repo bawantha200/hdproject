@@ -259,4 +259,21 @@ $categories = Category::all();
 
     return redirect()->back()->with('success', 'Vehicle deleted successfully!');
 }
+
+
+public function vehicleDetails($vehicle_slug)
+{
+    $vehicle = Vehicle::where('slug',$vehicle_slug)->first();
+    $rvehicle = Vehicle::where('slug','<>',$vehicle_slug)->get()->take(8);
+    return view('frontend.showVehicle',compact('vehicle','rvehicle'));
+}
+
+
+
+
+
+
+
+
+
 }

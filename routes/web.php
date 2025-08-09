@@ -8,6 +8,7 @@ use App\Http\Controllers\admin\RoleController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\customer\ProviderController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
@@ -57,17 +58,27 @@ Route::get('/vehicle', function () {
     $search = Vehicle::when('search');
 
     return view('frontend.vehicle',['vehicles'=>$vehicles,'categories'=>$categories,'statuses'=>$statuses,'search'=>$search]);
-});
+})->name('vehicles');
 
+
+// Route::get('/showVehicle', function () {
+//     $vehicles = Vehicle::paginate(12);
+//     $types = Vehicle::query('type');
+//     $statuses = Vehicle::query('status');
+
+
+//     return view('frontend.showVehicle',['vehicles'=>$vehicles,'types'=>$types,'statuses'=>$statuses]);
+// });
+
+// Route::get('/showVehicle/{vehicle_slug}',[Vehicle::class,'vehicleDetails'])->name('vehicle.details');
 
 Route::get('/showVehicle', function () {
-    $vehicles = Vehicle::paginate(12);
-    $types = Vehicle::query('type');
-    $statuses = Vehicle::query('status');
+    $vehicle = Vehicle::query('slug');
+    $rvehicle = Vehicle::query('vehicle_slug');
 
 
-    return view('frontend.showVehicle',['vehicles'=>$vehicles,'types'=>$types,'statuses'=>$statuses]);
-});
+    return view('frontend.showVehicle',['vehicle'=>$vehicle,'rvehicle'=>$rvehicle]);
+})->name('vehicle.details');
 
 Route::get('/about', function () {
     return view('frontend.about');
@@ -91,12 +102,13 @@ Route::middleware('guest')->group(function () {
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->name('logout');
 
+Route::get('/cart',[CartController::class,'index'])->name('cart.index');
+Route::post('/cart/store', [CartController::class, 'addToCart'])->name('cart.add');
+Route::delete('/cart/remove/{rowId}',[CartController::class,'removeItem'])->name('cart.remove');
 
-// Route::middleware('auth')->group(function () {
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
+
+
+
 
 
 // Profile routes

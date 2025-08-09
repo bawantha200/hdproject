@@ -21,9 +21,23 @@
                                     <span class="h5 text-primary">LKR {{$vehicle->daily_rate}}</span>
                                     <small class="text-muted d-block">per day</small>
                                 </div>
-                                <a href="#" class="btn btn-primary">
+                                <form name="addtocart-form" method="POST" action="{{ route('cart.add') }}">
+                                    @csrf
+                                    <div class="vehicle-single__addtocart">
+                                        <input type="hidden" name="id" value="{{ $vehicle->id }}" />
+                                        <input type="hidden" name="name" value="{{ $vehicle->brand }} {{ $vehicle->model }}" />
+                                        <input type="hidden" name="daily_rate" value="{{ $vehicle->daily_rate }}" />                        
+                                        <input type="hidden" name="category" value="{{ $vehicle->category->name }}" />
+                                        <!-- Add the image path from storage -->
+                                        <input type="hidden" name="image" value="{{ asset('storage/' . $vehicle->image) }}" />
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                                        </button>
+                                    </div>
+                                </form>
+                                <!-- <a href="{{route('cart.add')}}" class="btn btn-primary">
                                     <i class="fas fa-eye"></i> View
-                                </a>
+                                </a> -->
                             </div>
                         </div>
                     </div>

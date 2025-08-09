@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Gloudemans\Shoppingcart\Cart;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -12,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         //
-    }
+    } 
 
     /**
      * Bootstrap any application services.
@@ -20,5 +21,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+            config(['cart.calculator' => \App\Cart\DepositCalculator::class]);
     }
 }

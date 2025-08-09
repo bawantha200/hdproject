@@ -30,31 +30,23 @@
             <!-- User section - moved outside navbar-collapse -->
             <div class="d-flex align-items-center gap-3 ms-auto">
                 @auth
-                    <!-- Notification Icon with Badge -->
-                    <div class="position-relative">
-                        <a href="" class="text-secondary fs-5">
-                            <i class="bi bi-bell"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.5rem;">
-                                3
-                                <span class="visually-hidden">unread notifications</span>
-                            </span>
-                        </a>
-                    </div>
 
                     <!-- Cart Icon with Badge -->
                     <div class="position-relative">
-                        <a href="" class="text-secondary fs-5">
+                        <a href="{{route('cart.index')}}" class="text-white fs-5">
                             <i class="bi bi-cart"></i>
+                            @if(Cart::instance('cart')->content()->count()>0)
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" style="font-size: 0.5rem;">
-                                5
-                                <span class="visually-hidden">items in cart</span>
+                                {{Cart::instance('cart')->content()->count()}}
+                                <!-- <span class="visually-hidden">items in cart</span> -->
                             </span>
+                            @endif
                         </a>
                     </div>
 
                     <!-- Profile Dropdown -->
                     <div class="dropdown">
-                        <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle text-white" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-person-circle fs-4 me-2"></i>
                             <span class="d-none d-md-inline">{{ Auth::user()->first_name }}</span>
                         </a>
