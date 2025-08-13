@@ -1,36 +1,66 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Gloudemans\Shoppingcart\Facades\Cart;
+
 class CartController extends Controller
 {
-    //
+    // Existing methods...
+    
     public function index()
+    {
+        $items = Cart::instance('cart')->content();
+        
+        // Calculate cart totals with advance payment
+        $calculations = $this->calculateCartWithAdvance();
+        
+        return view('frontend.cart', compact('items', 'calculations'));
+    }
+    
+    // Add this new method to your controller
+    protected function calculateCartWithAdvance($advancePercentage = 30)
 {
-    $items = Cart::instance('cart')->content();
-    return view('frontend.cart',compact('items'));
+    // Get raw subtotal (without formatting)
+    $subtotal = Cart::instance('cart')->subtotal(0, '', ''); // Returns unformatted value
+    $tax = (float) Cart::instance('cart')->tax(0, '', ''); //tax
+    // Convert to proper amount (multiply by 100 if needed)
+    $subtotal = floatval($subtotal); // Adjust based on your actual stored values
+    $total = ($subtotal + $tax);
+    $advanceAmount = ($subtotal * $advancePercentage) / 100;
+    
+    
+    return [
+        'subtotal' => $subtotal,
+        'advance_payment' => $advanceAmount,
+        'tax' => $tax,
+        'total' => $total,
+        'payable_amount' => $advanceAmount,
+        'balance' => $total - $advanceAmount,
+    ];
 }
+    // Your existing addToCart, removeItem, updateDates methods...
 
     
 public function addToCart(Request $request)
 {
-    
     $validated = $request->validate([
         'id' => 'required|integer',
         'name' => 'required|string',
         'category' => 'required|string',
-        'daily_rate' => 'required|numeric',
+        'price' => 'required|numeric',
         'image' => 'required|string' // Validate the image path
     ]);
+    // Cart::instance('cart')->setGlobalTax(30);
 
     try {
         Cart::instance('cart')->add(
             $validated['id'],
             $validated['name'],
             1,
-            $validated['daily_rate'],
+            $validated['price'],
             [
                 'category' => $validated['category'],
                 'image' => $validated['image'] // Store the full image URL
@@ -62,6 +92,31 @@ public function removeItem($rowId)
     }
 }
 
+public function updateDates(Request $request)
+{
+    $validated = $request->validate([
+        'from_date' => 'required|date|after_or_equal:today',
+        'to_date' => 'required|date|after:from_date',
+    ]);
+
+    // Store dates in session
+    session([
+        'booking_from_date' => $validated['from_date'],
+        'booking_to_date' => $validated['to_date'],
+    ]);
+
+    // Update cart items with new dates (implementation depends on your cart system)
+    foreach (Cart::instance('cart')->content() as $item) {
+        Cart::instance('cart')->update($item->rowId, [
+            'options' => array_merge($item->options->toArray(), [
+                'from_date' => $validated['from_date'],
+                'to_date' => $validated['to_date'],
+            ])
+        ]);
+    }
+
+    return back()->with('success', 'Booking dates updated');
+}
 
 
 }

@@ -26,7 +26,7 @@
                                     <div class="vehicle-single__addtocart">
                                         <input type="hidden" name="id" value="{{ $vehicle->id }}" />
                                         <input type="hidden" name="name" value="{{ $vehicle->brand }} {{ $vehicle->model }}" />
-                                        <input type="hidden" name="daily_rate" value="{{ $vehicle->daily_rate }}" />                        
+                                        <input type="hidden" name="price" value="{{ $vehicle->daily_rate }}" />                        
                                         <input type="hidden" name="category" value="{{ $vehicle->category->name }}" />
                                         <!-- Add the image path from storage -->
                                         <input type="hidden" name="image" value="{{ asset('storage/' . $vehicle->image) }}" />

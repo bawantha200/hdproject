@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Illuminate\Support\ServiceProvider;
-use Gloudemans\Shoppingcart\Cart;
+use Surfsidemedia\Shoppingcart\Cart;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,6 +22,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
-            config(['cart.calculator' => \App\Cart\DepositCalculator::class]);
+        User::observe(\App\Observers\UserObserver::class);
     }
 }

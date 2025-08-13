@@ -61,7 +61,7 @@
                         </td>
                         <td class="align-middle"><h5 class="mb-1">{{ $item->name }}</h5></td>
                         <td class="align-middle">{{ $item->options->category }}</td>
-                        <td class="align-middle">LKR {{ $item->subtotal }}</td>
+                        <td class="align-middle">LKR {{ $item->price }}</td>
                         <td class="align-middle">
                             <form method="POST" action="{{ route('cart.remove', $item->rowId) }}" class="d-inline">
                                 @csrf
@@ -99,29 +99,42 @@
                 <tbody>
                   <tr>
                     <td>Subtotal</td>
-                    <td class="text-end">LKR {{Cart::instance('cart')->subtotal()}}</td>
+                    <td class="text-end">LKR {{ number_format($calculations['subtotal'], 2) }}</td>
                   </tr>
-                  <tr>
                     <!-- <td colspan="2">
                       <div>
                         <a href="#" class="text-primary text-decoration-none">CHANGE ADDRESS</a>
                       </div>
                     </td> -->
-                  </tr>
                   <tr>
-                    <td>Advance Payment</td>
-                    <td class="text-end">LKR {{Cart::instance('cart')->tax()}}</td>
+                  <td>Tax</td>
+                    <td class="text-end">LKR {{ number_format($calculations['tax'], 2) }}</td>
                   </tr>
+                  <!-- <tr>
+                    <td>Advance Payment (30%)</td>
+                    <td class="text-end">LKR {{ number_format($calculations['advance_payment'], 2) }}</td>
+                  </tr> -->
                   <tr class="border-top border-secondary">
                     <th>Total</th>
-                    <th class="text-end text-primary">LKR {{Cart::instance('cart')->total()}}</th>
+                    <th class="text-end text-primary">LKR {{ number_format($calculations['total'], 2) }}</th>
                   </tr>
-                    <tr class="border-top border-secondary">
-                    <td>Pay Advance</td>
-                    <td class="text-end">LKR {{Cart::instance('cart')->tax()}}</td>
+                  <tr class="border-top border-secondary">
+                    <th></th>
+                  </tr>
+                  <tr class="border-top border-secondary">
+                    <th>Advance Payment (30%)</th>
+                    <th class="text-end text-primary">LKR {{ number_format($calculations['advance_payment'], 2) }}</th>
+                  </tr>
+                  <tr class="border-top border-secondary">
+                    <td>Balance to Pay Later</td>
+                    <td class="text-end">LKR {{ number_format($calculations['balance'], 2) }}</td>
                   </tr>
                 </tbody>
               </table>
+              <div class="pay-advance text-primary">
+                      <h4>Pay Now</h4>
+                      <b>LKR {{ number_format($calculations['payable_amount'], 2) }}</b>
+                  </div>
 
               <a href="checkout.html" class="btn btn-secondary w-100 mt-4 py-3">
                 PROCEED TO CHECKOUT

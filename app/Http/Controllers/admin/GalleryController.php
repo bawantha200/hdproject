@@ -9,7 +9,7 @@ use App\Models\Gallery;
 class GalleryController extends Controller
 {
     //
-    public function Index(){
+    public function Index(){ 
 
         $galleries = Gallery::all();
         return view('admin.home.gallery',compact('galleries'));

@@ -72,7 +72,7 @@ class SliderController extends Controller
 
     }
 
-
+ 
     public function deleteslider($id){
         $delete = Slider::find($id);
         

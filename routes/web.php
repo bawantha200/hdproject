@@ -105,7 +105,7 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
 Route::get('/cart',[CartController::class,'index'])->name('cart.index');
 Route::post('/cart/store', [CartController::class, 'addToCart'])->name('cart.add');
 Route::delete('/cart/remove/{rowId}',[CartController::class,'removeItem'])->name('cart.remove');
-
+Route::post('/cart/update-dates', [CartController::class, 'updateDates'])->name('cart.updateDates');
 
 
 
