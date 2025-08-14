@@ -11,7 +11,7 @@ class DashboardController extends Controller
     public function index()
     {
         /** @var User $user */ // This helps your IDE understand the type
-        $user = Auth::user(); // Using facade instead of auth() helper
+        $user = Auth::user(); // Using facade instead of auth() helper 
         
         if ($user->hasAnyRole(['admin', 'manager'])) {
             return view('admin.dashboard', [

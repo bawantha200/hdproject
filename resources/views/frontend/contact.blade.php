@@ -1,6 +1,11 @@
 @extends('frontend.layouts.master')
 
 @section('content')
+<style>
+    .text-danger {
+        color: #e72010 !important;
+    }    
+</style>
 
  <main>
         <div class="container contact-section">
@@ -14,18 +19,27 @@
             <div class="row">
                 <!-- Contact Form -->
                 <div class="col-md-6 mb-4">
-                    <form>
+                    @if(Session::has('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{Session::get('success')}}
+                    </div>
+                    @endif
+                    <form name="contact-us-form" class="needs-validation" novalidate="" action="{{route('contact.store')}}" method="POST">
+                        @csrf
                         <div class="mb-3">
                             <label class="form-label">Your Name</label>
-                            <input type="text" class="form-control" placeholder="Your Name">
+                            <input type="text" class="form-control" name="name" placeholder="Your Name" required>
+                            @error('name') <span class="text-danger">{{$message}}</span> @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Email Address</label>
-                            <input type="email" class="form-control" placeholder="email@example.com">
+                            <input type="email" class="form-control" name="email" placeholder="email@example.com" required>
+                            @error('email') <span class="text-danger">{{$message}}</span> @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Message</label>
-                            <textarea class="form-control" rows="5" placeholder="Your message..."></textarea>
+                            <textarea class="form-control" rows="5" name="message" placeholder="Your message..." required></textarea>
+                            @error('message') <span class="text-danger">{{$message}}</span> @enderror
                         </div>
                         <button type="submit" class="btn btn-primary">Send Message</button>
                     </form>

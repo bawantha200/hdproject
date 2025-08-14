@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
@@ -123,4 +125,48 @@ class UserController extends Controller
 
     return view('admin.home.customer', compact('users', 'roles'));
 }
+
+public function orders()
+{
+$orders = Order::where('user_id',Auth::user()->id)->orderBy('created_at','DESC')->paginate(10);
+return view('admin.home.order',compact('orders'));
+}
+
+
+public function myOrders(Request $request)
+{
+    // Get filter values from request
+    $status = $request->query('status');
+    $search = $request->query('search');
+    
+    // Start building the query for the authenticated user's orders
+    $query = Order::where('user_id', auth()->id());
+    
+    // Apply status filter if provided
+    if ($status) {
+        $query->where('status', $status);
+    }
+    
+    // Apply search filter if provided
+    if ($search) {
+        $query->where(function($q) use ($search) {
+            $q->where('order_number', 'like', "%{$search}%")
+              ->orWhere('name', 'like', "%{$search}%")
+              ->orWhere('phone', 'like', "%{$search}%");
+        });
+    }
+    
+    // Define possible statuses for filter dropdown
+    $statuses = [
+        'ordered' => 'Ordered',
+        'delivered' => 'Delivered', 
+        'canceled' => 'Canceled'
+    ];
+    
+    $perPage = 10; // Items per page
+    $orders = $query->latest()->paginate($perPage);
+    
+    return view('customer.order', compact('orders', 'statuses'));
+}
+
 }

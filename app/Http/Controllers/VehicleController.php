@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Vehicle;
 use App\Models\User;
 use Illuminate\Container\Attributes\Auth;
@@ -268,8 +270,66 @@ public function vehicleDetails($vehicle_slug)
     return view('frontend.showVehicle',compact('vehicle','rvehicle'));
 }
 
+public function orders() 
+{
+        $orders = Order::orderBy('created_at','DESC')->paginate(12);
+        return view('admin.home.orders',compact('orders'));
+}
 
 
+
+// public function providerOrders(Request $request)
+// {
+//     // Get filter values from request
+//     $status = $request->query('status');
+//     $search = $request->query('search');
+//     $vehicle_id = $request->query('vehicle_id');
+    
+//     // Start building the query for orders of the provider's vehicles
+//     $query = OrderItem::whereHas('product', function($q) {
+//         $q->where('added_by', auth()->id()); // Only orders for vehicles owned by this provider
+//     });
+    
+//     // Apply status filter if provided
+//     if ($status) {
+//         $query->where('status', $status);
+//     }
+    
+//     // Apply vehicle filter if provided
+//     if ($vehicle_id) {
+//         $query->where('vehicle_id', $vehicle_id);
+//     }
+    
+//     // Apply search filter if provided
+//     if ($search) {
+//         $query->where(function($q) use ($search) {
+//             $q->where('order_number', 'like', "%{$search}%")
+//               ->orWhere('name', 'like', "%{$search}%")
+//               ->orWhere('phone', 'like', "%{$search}%")
+//               ->orWhereHas('vehicle', function($q) use ($search) {
+//                   $q->where('name', 'like', "%{$search}%");
+//               });
+//         });
+//     }
+    
+//     // Get the provider's vehicles for filter dropdown
+//     $vehicles = Vehicle::where('added_by', auth()->id())->get();
+    
+//     // Define possible statuses for filter dropdown
+//     $statuses = [
+//         'pending' => 'Pending',
+//         'confirmed' => 'Confirmed',
+//         'completed' => 'Completed',
+//         'canceled' => 'Canceled'
+//     ];
+    
+//     $perPage = 10;
+//     $orders = $query->with(['vehicle', 'user'])
+//                    ->latest()
+//                    ->paginate($perPage);
+    
+//     return view('customer.orders', compact('orders', 'vehicles', 'statuses'));
+// }
 
 
 

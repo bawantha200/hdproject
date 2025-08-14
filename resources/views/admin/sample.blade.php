@@ -168,3 +168,92 @@
                         </table>
                     </div>
 </div>
+
+
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Address;
+use App\Models\Vehicle;
+use Illuminate\Http\Request;
+use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+
+class CartController extends Controller
+{
+    public function index()
+    {
+        $items = Cart::instance('cart')->content();
+        
+        // Get booking dates from session or set defaults
+        $bookingDates = [
+            'from_date' => session('booking_from_date', Carbon::today()->toDateString()),
+            'to_date' => session('booking_to_date', Carbon::tomorrow()->toDateString())
+        ];
+        
+        // Calculate cart totals with advance payment
+        $calculations = $this->calculateCartWithAdvance($bookingDates);
+        
+        return view('frontend.cart', compact('items', 'calculations', 'bookingDates'));
+    }
+    
+    protected function calculateCartWithAdvance($bookingDates, $advancePercentage = 30)
+    {
+        $fromDate = Carbon::parse($bookingDates['from_date']);
+        $toDate = Carbon::parse($bookingDates['to_date']);
+        $days = $fromDate->diffInDays($toDate);
+        
+        // Minimum 1 day rental
+        $days = max(1, $days);
+        
+        // Get the daily rate (subtotal for one day)
+        $dailyRate = floatval(Cart::instance('cart')->subtotal(0, '', ''));
+        
+        // Calculate total for the rental period
+        $subtotal = $dailyRate * $days;
+        $tax = ($subtotal * config('cart.tax')) / 100; // Assuming tax is a percentage
+        $total = $subtotal + $tax;
+        $advanceAmount = ($total * $advancePercentage) / 100;
+        
+        return [
+            'daily_rate' => $dailyRate,
+            'subtotal' => $subtotal,
+            'tax' => $tax,
+            'total' => $total,
+            'advance_payment' => $advanceAmount,
+            'payable_amount' => $advanceAmount,
+            'balance' => $total - $advanceAmount,
+            'days' => $days
+        ];
+    }
+
+    // ... (keep your other methods the same: addToCart, removeItem, checkout)
+    
+    public function updateDates(Request $request)
+    {
+        $validated = $request->validate([
+            'pickup_date' => 'required|date|after_or_equal:today',
+            'return_date' => 'required|date|after:pickup_date',
+        ]);
+
+        // Store dates in session
+        session([
+            'booking_from_date' => $validated['pickup_date'],
+            'booking_to_date' => $validated['return_date'],
+        ]);
+
+        // Update cart items with new dates
+        foreach (Cart::instance('cart')->content() as $item) {
+            Cart::instance('cart')->update($item->rowId, [
+                'options' => array_merge($item->options->toArray(), [
+                    'from_date' => $validated['pickup_date'],
+                    'to_date' => $validated['return_date'],
+                ])
+            ]);
+        }
+
+        return back()->with('success', 'Booking dates updated successfully!');
+    }
+}

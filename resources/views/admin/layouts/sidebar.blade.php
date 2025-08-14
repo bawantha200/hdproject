@@ -5,20 +5,20 @@
             @if(auth()->user()->hasAnyRole(['admin|manager']))
               <a href="/dashboard" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800 active"><i
                   class="ph ph-gauge"></i> Overview</a>
-              <a href="#" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800"><i
+              <a href="{{ route('admin.orders') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800"><i
                   class="ph ph-calendar-check"></i> Bookings</a>
               <a href="/vehicleIndex" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800"><i class="ph ph-truck"></i>
                 Vehicles</a>
-              <a href="/customer" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800"><i class="ph ph-users"></i>
-                Customers</a>
+              <!-- <a href="/customer" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800"><i class="ph ph-users"></i>
+                Customers</a> -->
               <a href="#" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800"><i
                   class="ph ph-credit-card"></i> Payments</a>
-              <a href="#" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800"><i class="ph ph-chart-bar"></i>
-                Reports</a>
+              <a href="{{ route('contact.admin') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800"><i class="fa-regular fa-message"></i>
+                Messages</a>
               <a href="/profileIndex" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800">
                 <i class="ph ph-user"></i> Profile</a>
               <a href="/CategoryIndex" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800">
-                <i class="ph ph-user"></i> Category</a>
+                <i class="fa-solid fa-list"></i> Category</a>
                 
               <a href="/SliderIndex" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800"><i
                   class="ph ph-sliders-horizontal"></i> Page Settings</a>
@@ -61,7 +61,7 @@
                   <i class="ph ph-gauge"></i> Overview
               </a>
 
-              <a href="/bookings" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800">
+              <a href="{{ route('user.account.orders') }}" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800">
                   <i class="ph ph-calendar-check"></i> My Bookings
               </a>
 
@@ -69,7 +69,7 @@
                   <i class="ph ph-user"></i> Profile
               </a>
 
-              <a href="/payments" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800">
+              <a href="" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800">
                     <i class="ph ph-credit-card"></i> Payments
               </a>
             @endif
@@ -79,10 +79,10 @@
                 <a href="/myVehicles" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800">
                     <i class="ph ph-truck"></i> My Vehicles
                 </a>
-                <a href="/booking-requests" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800">
+                <a href="" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800">
                     <i class="ph ph-list-checks"></i> Booking Requests
                 </a>
-                <a href="/earnings" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800">
+                <a href="" class="flex items-center gap-2 px-4 py-2 rounded hover:bg-gray-800">
                     <i class="ph ph-currency-circle-dollar"></i> Earnings
                 </a>
             @endif

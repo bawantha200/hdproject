@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\admin\CategoryController;
+use App\Http\Controllers\admin\ContactController;
 use App\Http\Controllers\admin\SliderController;
 use App\Http\Controllers\admin\GalleryController;
 use App\Http\Controllers\admin\PermissionController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CartController;
+
 use App\Http\Controllers\customer\ProviderController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
@@ -44,7 +46,7 @@ Route::get('/', function () {
     $sliders = Slider::all();
     $users = User::all();
     return view('frontend.home',compact('sliders','users'));
-});
+})->name('home');
 
 Route::get('/gallery', function () {
     $galleries = Gallery::all();
@@ -84,9 +86,16 @@ Route::get('/about', function () {
     return view('frontend.about');
 });
 
-Route::get('/contact', function () {
-    return view('frontend.contact');
-});
+// Route::get('/contact', function () {
+//     return view('frontend.contact');
+// });
+
+Route::get('/contact',[ContactController::class, 'index'])->name('contact.home');
+Route::post('/contact/store',[ContactController::class, 'contact_store'])->name('contact.store');
+Route::get('/contact/admin',[ContactController::class, 'contact'])->name('contact.admin');
+
+
+
 
 Route::get('/dashboard', function () {
     return view('admin.dashboard');
@@ -107,7 +116,9 @@ Route::post('/cart/store', [CartController::class, 'addToCart'])->name('cart.add
 Route::delete('/cart/remove/{rowId}',[CartController::class,'removeItem'])->name('cart.remove');
 Route::post('/cart/update-dates', [CartController::class, 'updateDates'])->name('cart.updateDates');
 
-
+Route::get('/checkout',[CartController::class,'checkout'])->name('cart.checkout');
+Route::post('/place-order',[CartController::class,'place_order'])->name('cart.place.order');
+Route::get('/order-confirmation',[CartController::class,'confirmation'])->name('cart.confirmation');
 
 
 
@@ -229,6 +240,16 @@ Route::middleware(['auth', 'verified','role:admin|manager'])->group(function () 
 
         Route::get('/customer', [UserController::class, 'indexCustomer'])->name('customer.index'); 
 });
+
+Route::get('/admin/orders',[VehicleController::class,'orders'])->name('admin.orders');
+
+
+Route::middleware(['auth', 'verified'])->group(function () {
+
+    Route::get('/account-orders',[UserController::class,'myOrders'])->name('user.account.orders');
+
+});
+
 
 
 require __DIR__.'/auth.php';

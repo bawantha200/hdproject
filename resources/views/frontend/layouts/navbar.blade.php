@@ -17,14 +17,14 @@
                     <li class="nav-item"> <a class="nav-link" href="vehicle">Vehicles</a> </li> 
                     <li class="nav-item"><a class="nav-link" href="gallery">Gallery</a></li>
                     <li class="nav-item"> <a class="nav-link" href="about">About</a> </li>
-                    <li class="nav-item"> <a class="nav-link" href="contact">Contact Us</a> </li>
+                    <li class="nav-item"> <a class="nav-link" href="{{route('contact.home')}}">Contact Us</a> </li>
                 </ul> 
                 
                 <!-- Search form -->
-                <form class="d-flex me-3" role="search"> 
+                <!-- <form class="d-flex me-3" role="search"> 
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> 
                     <button class="btn btn-outline-success" type="submit">Search</button> 
-                </form> 
+                </form>  -->
             </div> 
             
             <!-- User section - moved outside navbar-collapse -->
